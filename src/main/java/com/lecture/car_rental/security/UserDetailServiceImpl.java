@@ -1,4 +1,4 @@
-package com.lecture.car_rental.security.service;
+package com.lecture.car_rental.security;
 
 import com.lecture.car_rental.domain.User;
 import com.lecture.car_rental.repository.UserRepository;
