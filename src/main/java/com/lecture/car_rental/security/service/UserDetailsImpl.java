@@ -1,4 +1,4 @@
-package com.lecture.car_rental.security;
+package com.lecture.car_rental.security.service;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.lecture.car_rental.domain.User;

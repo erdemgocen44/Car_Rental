@@ -1,7 +1,7 @@
 package com.lecture.car_rental.security.jwt;
 
 
-import com.lecture.car_rental.security.UserDetailsImpl;
+import com.lecture.car_rental.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
