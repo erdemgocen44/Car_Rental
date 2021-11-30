@@ -23,7 +23,9 @@ import org.springframework.security.web.authentication.UsernamePasswordAuthentic
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
     private final UserDetailsServiceImpl userDetailsService;
+
     private final AuthEntryPointJwt authEntryPointJwt;
 
     @Bean
@@ -49,26 +51,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .cors()
-                .and()
-                .csrf()
-                .disable()
-                .exceptionHandling()
-                .authenticationEntryPoint(authEntryPointJwt)
-                .and()
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
-                .and()
-                .authorizeRequests()
-                .antMatchers("/car-rental/api/user/**")
-                .permitAll()
-                .anyRequest()
-                .authenticated();
+        http.cors().and().csrf().disable()
+                .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                //TODO: change it, give a permission to this url
+                .authorizeRequests().antMatchers("/car-rental/api/user/**").permitAll()
+                .anyRequest().authenticated();
+
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
+    //TODO: change it, These url open for all users/visitors :D
     @Override
     public void configure(WebSecurity web) throws Exception {
-web.ignoring().antMatchers();    }
+        web.ignoring().antMatchers("/login", "/register");
+    }
 }

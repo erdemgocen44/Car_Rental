@@ -1,6 +1,5 @@
 package com.lecture.car_rental.controller;
 
-
 import com.lecture.car_rental.domain.User;
 import com.lecture.car_rental.security.jwt.JwtUtils;
 import com.lecture.car_rental.service.UserService;
@@ -32,33 +31,33 @@ public class UserController {
 
     public JwtUtils jwtUtils;
 
-    @PostMapping("/user/register")
 
-    public ResponseEntity<Map<String, Boolean>> registerUser(@Valid @RequestBody User user) {
+    //TODO: change this url
+    @PostMapping("/register")
+    public ResponseEntity<Map<String, Boolean>> registerUser(@Valid @RequestBody User user){
         userService.register(user);
 
         Map<String, Boolean> map = new HashMap<>();
-        map.put("User registered succesfully", true);
+        map.put("User registered successfully!", true);
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
 
-    @PostMapping("/user/login")
-
+    //TODO: change this url
+    @PostMapping("/login")
     public ResponseEntity<Map<String, String>> authenticateUser(@RequestBody Map<String, Object> userMap) {
         String username = (String) userMap.get("username");
-
         String password = (String) userMap.get("password");
 
-        userService.login(username,password);
+        userService.login(username, password);
 
-        Authentication authentication=authenticationManager.
-                authenticate(new UsernamePasswordAuthenticationToken(username,password));
+        Authentication authentication = authenticationManager.authenticate(
+                new UsernamePasswordAuthenticationToken(username, password));
 
         SecurityContextHolder.getContext().setAuthentication(authentication);
-        String jwt=jwtUtils.generateJwtToken(authentication);
+        String jwt = jwtUtils.generateJwtToken(authentication);
 
-        Map<String,String>map=new HashMap<>();
-        map.put("token",jwt);
-        return new ResponseEntity<>(map,HttpStatus.OK);
+        Map<String, String> map = new HashMap<>();
+        map.put("token", jwt);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
 }

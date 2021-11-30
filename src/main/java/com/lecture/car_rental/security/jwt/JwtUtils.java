@@ -1,6 +1,5 @@
 package com.lecture.car_rental.security.jwt;
 
-
 import com.lecture.car_rental.security.service.UserDetailsImpl;
 import io.jsonwebtoken.*;
 import org.slf4j.Logger;
@@ -13,13 +12,19 @@ import java.util.Date;
 
 @Component
 public class JwtUtils {
+
     private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
+
     @Value("${backendapi.app.jwtSecret}")
     private String jwtSecret;
+
     @Value("${backendapi.app.jwtExpirationMs}")
     private long jwtExpirationMs;
+
     public String generateJwtToken(Authentication authentication) {
+
         UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+
         return Jwts.builder()
                 .setSubject((userDetails.getUsername()))
                 .setIssuedAt(new Date())
@@ -27,6 +32,7 @@ public class JwtUtils {
                 .signWith(SignatureAlgorithm.HS512, jwtSecret)
                 .compact();
     }
+
     public String getUserNameFromJwtToken(String token) {
         return Jwts.parser().setSigningKey(jwtSecret).parseClaimsJws(token).getBody().getSubject();
     }

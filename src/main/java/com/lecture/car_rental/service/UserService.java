@@ -2,7 +2,7 @@ package com.lecture.car_rental.service;
 
 import com.lecture.car_rental.domain.Role;
 import com.lecture.car_rental.domain.User;
-import com.lecture.car_rental.domain.enumerition.UserRole;
+import com.lecture.car_rental.domain.enumeration.UserRole;
 import com.lecture.car_rental.exception.AuthException;
 import com.lecture.car_rental.exception.BadRequestException;
 import com.lecture.car_rental.exception.ConflictException;
@@ -21,19 +21,26 @@ import java.util.Set;
 @AllArgsConstructor
 @Service
 public class UserService {
+
     private final UserRepository userRepository;
+
     private final RoleRepository roleRepository;
+
     private final PasswordEncoder passwordEncoder;
 
     public void register(User user) throws BadRequestException {
         if (userRepository.existsByUsername(user.getUsername())) {
             throw new ConflictException("Error: Username is already taken!");
         }
+
         if (userRepository.existsByEmail(user.getEmail())) {
             throw new ConflictException("Error: Email is already in use!");
         }
+
         String encodedPassword = passwordEncoder.encode(user.getPassword());
-        user.setAddress(encodedPassword);
+        // TODO: I wrote setAddress :D I am soo crazy :)))) please change setAddress to set Password
+        user.setPassword(encodedPassword);
+
         Set<Role> roles = new HashSet<>();
         Role customerRole = roleRepository.findByName(UserRole.ROLE_CUSTOMER)
                 .orElseThrow(() -> new ResourceNotFoundException("Error: Role is not found."));
@@ -46,6 +53,7 @@ public class UserService {
     public void login(String username, String password) throws AuthException {
         try {
             Optional<User> user = userRepository.findByUsername(username);
+
             if (!BCrypt.checkpw(password, user.get().getPassword()))
                 throw new AuthException("Invalid credentials");
         } catch (Exception e) {
