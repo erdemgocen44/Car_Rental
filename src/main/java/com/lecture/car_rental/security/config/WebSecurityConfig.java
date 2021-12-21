@@ -54,16 +54,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
         http.cors().and().csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                //TODO: change it, give a permission to this url
                 .authorizeRequests().antMatchers("/car-rental/api/user/**").permitAll()
                 .anyRequest().authenticated();
+
+        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
+                .antMatcher("/car-rental/api/login")
+                .antMatcher("/car-rental/api/register");
 
         http.addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class);
     }
 
-    //TODO: change it, These url open for all users/visitors :D
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/login", "/register");
+        web.ignoring().antMatchers("/configuration/**");
     }
 }
