@@ -111,6 +111,8 @@ public class UserController {
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
 
+
+
     @PatchMapping("/user/auth")
     @PreAuthorize("hasRole('CUSTOMER')or hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> updatePassword(HttpServletRequest request, @RequestBody Map<String, Object> userMap) {
@@ -124,6 +126,13 @@ public class UserController {
         map.put("success", true);
         return new ResponseEntity<>(map, HttpStatus.OK);
     }
-
+    @DeleteMapping("/user/{id}/auth")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Boolean>> deleteUser(@PathVariable Long id) {
+        userService.removeById(id);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
 
 }
