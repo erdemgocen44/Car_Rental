@@ -130,14 +130,17 @@ public class UserService {
                         Role adminRole = roleRepository.findByName(UserRole.ROLE_ADMIN)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(adminRole);
+                        break;
                     case "CustomerService":
                         Role customerServiceRole = roleRepository.findByName(UserRole.ROLE_CUSTOMER_SERVICE)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(customerServiceRole);
+                        break;
                     case "Manager":
                         Role managerRole = roleRepository.findByName(UserRole.ROLE_MANAGER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
                         roles.add(managerRole);
+                        break;
                     default:
                         Role userRole = roleRepository.findByName(UserRole.ROLE_CUSTOMER)
                                 .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
