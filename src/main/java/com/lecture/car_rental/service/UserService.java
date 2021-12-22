@@ -2,6 +2,7 @@ package com.lecture.car_rental.service;
 
 import com.lecture.car_rental.domain.Role;
 import com.lecture.car_rental.domain.User;
+import com.lecture.car_rental.domain.dto.AdminDTO;
 import com.lecture.car_rental.domain.enumeration.UserRole;
 import com.lecture.car_rental.dto.UserDTO;
 import com.lecture.car_rental.exception.AuthException;
@@ -94,5 +95,22 @@ public class UserService {
 
         userRepository.update(id, userDTO.getFirstName(), userDTO.getLastName(), userDTO.getPhoneNumber(),
                 userDTO.getEmail(), userDTO.getAddress(), userDTO.getZipCode());
+    }
+    public void updatePassword(Long id,String newPassword,String oldPassword)throws BadRequestException{
+
+        Optional<User>  user=userRepository.findById(id);
+
+        if (user.get().getBuiltIn())throw new BadRequestException("You don't permission to update password");
+        if (!BCrypt.hashpw(oldPassword,user.get().getPassword()).equals(user.get().getPassword())) throw new BadRequestException("password does not match!");
+        
+        String hashedPassword=passwordEncoder.encode(newPassword);
+        user.get().setPassword(hashedPassword);
+
+        userRepository.save(user.get());
+    }
+
+    public void  updateUserAuth(Long id, AdminDTO adminDTO)throws BadRequestException{
+boolean emailExist=userRepository.existsByEmail(adminDTO.getEmail());
+
     }
 }
