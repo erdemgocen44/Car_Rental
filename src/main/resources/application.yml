@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: password
+    password: hr
     username: postgres
-    url: jdbc:postgresql://localhost:5432/lecture
+    url: jdbc:postgresql://localhost:5432/postgres
   jpa:
     hibernate:
       ddl-auto: update
