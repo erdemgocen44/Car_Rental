@@ -17,6 +17,9 @@ public class CarService {
     private final CarRepository carRepository;
     private final FileDBRepository fileDBRepository;
     private final static String IMAGE_NOT_FOUND_MSG = "image with id %s not found";
+
+
+
     public void add(Car car, String imageId) throws BadRequestException {
         FileDB fileDB = fileDBRepository.findById(imageId).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(IMAGE_NOT_FOUND_MSG, imageId)));
