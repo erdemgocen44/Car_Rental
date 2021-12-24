@@ -29,12 +29,15 @@ public class Car implements Serializable {
     @NotNull(message = "Please enter the car doors")
     @Column(nullable = false)
     private Integer doors;
+
     @NotNull(message = "Please enter the car seats")
     @Column(nullable = false)
     private Integer seats;
+
     @NotNull(message = "Please enter the car luggage")
     @Column(nullable = false)
     private Integer luggage;
+
     @Size(max = 30, message = "Size is exceeded")
     @NotNull(message = "Please enter the car transmission")
     @Column(length = 30, nullable = false)
@@ -43,6 +46,7 @@ public class Car implements Serializable {
     @NotNull(message = "Please enter the air conditioning")
     @Column(nullable = false)
     private Boolean airConditioning;
+
     @NotNull(message = "Please enter the car age")
     @Column(nullable = false)
     private Integer age;
@@ -52,9 +56,11 @@ public class Car implements Serializable {
             joinColumns = @JoinColumn(name = "car_id"),
             inverseJoinColumns = @JoinColumn(name = "file_id"))
     private Set<FileDB> image;
+
     @NotNull(message = "Please enter the price per hour of the car")
     @Column(nullable = false)
     private Double pricePerHour;
+
     @Size(max = 30, message = "Size is exceeded")
     @NotNull(message = "Please enter the car fuel type")
     @Column(nullable = false, length = 30)

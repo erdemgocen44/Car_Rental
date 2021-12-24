@@ -1,6 +1,6 @@
-package com.lecture.car_rental.controller;
 
 import com.lecture.car_rental.domain.Car;
+import com.lecture.car_rental.dto.CarDTO;
 import com.lecture.car_rental.service.CarService;
 import lombok.AllArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -11,6 +11,7 @@ import javax.validation.Valid;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.MediaType;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @CrossOrigin(origins = "*", maxAge = 3600)
 @AllArgsConstructor
@@ -19,6 +20,16 @@ import java.util.Map;
 @RequestMapping("/car")
 public class CarController {
     public CarService carService;
+    @GetMapping("/visitors/all")
+    public ResponseEntity<List<CarDTO>> getAllCars(){
+        List<CarDTO> cars = carService.fetchAllCars();
+        return new ResponseEntity<>(cars, HttpStatus.OK);
+    }
+    @GetMapping("/visitors/{id}")
+    public ResponseEntity<CarDTO> getCarById(@PathVariable Long id) {
+        CarDTO car = carService.findById(id);
+        return new ResponseEntity<>(car, HttpStatus.OK);
+    }
     @PostMapping("/admin/{imageId}/add")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> addCar(@PathVariable String imageId,
@@ -28,14 +39,20 @@ public class CarController {
         map.put("Car added successfully!", true);
         return new ResponseEntity<>(map, HttpStatus.CREATED);
     }
-
     @PutMapping("/admin/auth")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<Map<String, Boolean>> updateCar(@RequestParam("id") Long id,
                                                           @RequestParam("imageId") String imageId,
                                                           @Valid @RequestBody Car car){
-
         carService.updateCar(id, car, imageId);
+        Map<String, Boolean> map = new HashMap<>();
+        map.put("success", true);
+        return new ResponseEntity<>(map, HttpStatus.OK);
+    }
+    @DeleteMapping("/admin/{id}/auth")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<Map<String, Boolean>> deleteCar(@PathVariable Long id) {
+        carService.removeById(id);
         Map<String, Boolean> map = new HashMap<>();
         map.put("success", true);
         return new ResponseEntity<>(map, HttpStatus.OK);

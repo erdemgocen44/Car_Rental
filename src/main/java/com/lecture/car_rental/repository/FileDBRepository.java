@@ -7,6 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Repository
 @Transactional
-
-public interface FileDBRepository extends JpaRepository<FileDB,String> {
+public interface FileDBRepository extends JpaRepository<FileDB, String> {
 }
