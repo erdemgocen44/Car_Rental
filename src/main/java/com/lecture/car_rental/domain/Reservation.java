@@ -1,7 +1,7 @@
 package com.lecture.car_rental.domain;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.lecture.car_rental.domain.enumeration.ReservationtStatus;
+import com.lecture.car_rental.domain.enumeration.ReservationStatus;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -54,7 +54,7 @@ public class Reservation implements Serializable {
 
     @Enumerated(EnumType.STRING)
     @Column(length = 30,nullable = false)
-    private ReservationtStatus status;
+    private ReservationStatus status;
 
 
     @Column(nullable = false)
