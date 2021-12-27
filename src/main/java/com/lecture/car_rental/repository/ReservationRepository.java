@@ -19,7 +19,6 @@ public interface ReservationRepository extends JpaRepository<Reservation, Long> 
     @Query("SELECT new com.lecture.car_rental.dto.ReservationDTO(r) FROM Reservation r")
     List<ReservationDTO> findAllReservation();
 
-
     @Query("SELECT new com.lecture.car_rental.dto.ReservationDTO(r) FROM Reservation r WHERE r.id = ?1")
     Optional<ReservationDTO> findReservationById(Long id);
 

@@ -22,29 +22,24 @@ import java.util.Map;
 @RequestMapping("/reservations")
 public class ReservationController {
     public ReservationService reservationService;
-
     @GetMapping("/admin/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ReservationDTO>> getAllReservations() {
         List<ReservationDTO> reservations = reservationService.fetchAllReservations();
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
-
-    @GetMapping("/{id}/admin")
-    @PreAuthorize("hasRole('ADMIN')")
-    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
-        ReservationDTO reservation = reservationService.findById(id);
-        return new ResponseEntity<>(reservation, HttpStatus.OK);
-    }
-
     @GetMapping("/admin/auth/all")
     @PreAuthorize("hasRole('ADMIN')")
     public ResponseEntity<List<ReservationDTO>> getAllUserReservations(@RequestParam (value = "userId") Long userId) {
         List<ReservationDTO> reservations = reservationService.findAllByUserId(userId);
         return new ResponseEntity<>(reservations, HttpStatus.OK);
     }
-
-
+    @GetMapping("/{id}/admin")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<ReservationDTO> getReservationById(@PathVariable Long id) {
+        ReservationDTO reservation = reservationService.findById(id);
+        return new ResponseEntity<>(reservation, HttpStatus.OK);
+    }
     @GetMapping("/{id}/auth")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
     public ResponseEntity<ReservationDTO> getUserReservationById(@PathVariable Long id,
