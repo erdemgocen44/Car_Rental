@@ -1,3 +1,4 @@
+package com.lecture.car_rental.controller;
 
 import com.lecture.car_rental.domain.Car;
 import com.lecture.car_rental.dto.CarDTO;
