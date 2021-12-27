@@ -37,6 +37,13 @@ public class ReservationController {
         return new ResponseEntity<>(reservation, HttpStatus.OK);
     }
 
+    @GetMapping("/admin/auth/all")
+    @PreAuthorize("hasRole('ADMIN')")
+    public ResponseEntity<List<ReservationDTO>> getAllUserReservations(@RequestParam (value = "userId") Long userId) {
+        List<ReservationDTO> reservations = reservationService.findAllByUserId(userId);
+        return new ResponseEntity<>(reservations, HttpStatus.OK);
+    }
+
 
     @GetMapping("/{id}/auth")
     @PreAuthorize("hasRole('CUSTOMER') or hasRole('ADMIN')")
