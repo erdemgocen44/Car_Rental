@@ -22,8 +22,14 @@ public class ReservationService {
     private final CarRepository carRepository;
     private static final String USER_NOT_FOUND_MSG = "user with id %d not found";
     private static final String CAR_NOT_FOUND_MSG = "car with id %d not found";
-    public  List<ReservationDTO> fetchUserReservationById() {
-        return reservationRepository.
+    private static final String RESERVATION_NOT_FOUND_MSG = "reservation with id %d not found";
+
+    public ReservationDTO findByIdAndUserId(Long id, Long userId) throws ResourceNotFoundException {
+        return reservationRepository.findReservationByUserId(id, userId).orElseThrow(() ->
+                new ResourceNotFoundException(String.format(RESERVATION_NOT_FOUND_MSG, id)));
+    }
+    public List<ReservationDTO> findAllByUserId(Long userId) throws ResourceNotFoundException {
+        return reservationRepository.findReservationsByUserId(userId);
     }
     public void addReservation(Reservation reservation, Long userId, Car carId) throws BadRequestException {
         boolean checkStatus = carAvailability(carId.getId(), reservation.getPickUpTime(), reservation.getDropOffTime());
