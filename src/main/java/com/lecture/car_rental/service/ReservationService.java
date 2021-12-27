@@ -3,6 +3,7 @@ import com.lecture.car_rental.domain.Car;
 import com.lecture.car_rental.domain.Reservation;
 import com.lecture.car_rental.domain.User;
 import com.lecture.car_rental.domain.enumeration.ReservationStatus;
+import com.lecture.car_rental.dto.ReservationDTO;
 import com.lecture.car_rental.exception.BadRequestException;
 import com.lecture.car_rental.exception.ResourceNotFoundException;
 import com.lecture.car_rental.repository.CarRepository;
@@ -21,8 +22,11 @@ public class ReservationService {
     private final CarRepository carRepository;
     private static final String USER_NOT_FOUND_MSG = "user with id %d not found";
     private static final String CAR_NOT_FOUND_MSG = "car with id %d not found";
+    public  List<ReservationDTO> fetchUserReservationById() {
+        return reservationRepository.
+    }
     public void addReservation(Reservation reservation, Long userId, Car carId) throws BadRequestException {
-        boolean checkStatus = carAvailability(carId.getId(), reservation.getPickUpTime(), reservation.getDropOfTime());
+        boolean checkStatus = carAvailability(carId.getId(), reservation.getPickUpTime(), reservation.getDropOffTime());
         User user = userRepository.findById(userId).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(USER_NOT_FOUND_MSG, userId)));
         if (!checkStatus)
@@ -31,9 +35,8 @@ public class ReservationService {
             throw new BadRequestException("Car is already reserved! Please choose another");
         reservation.setCarId(carId);
         reservation.setUserId(user);
-        Double totalPrice = totalPrice(reservation.getPickUpTime(), reservation.getDropOfTime(), carId.getId());
+        Double totalPrice = totalPrice(reservation.getPickUpTime(), reservation.getDropOffTime(), carId.getId());
         reservation.setTotalPrice(totalPrice);
-
         reservationRepository.save(reservation);
     }
     public boolean carAvailability(Long carId, LocalDateTime pickUpTime, LocalDateTime dropOffTime) {
@@ -41,10 +44,10 @@ public class ReservationService {
                 ReservationStatus.DONE, ReservationStatus.CANCELED);
         return checkStatus.size() > 0;
     }
-    public Double totalPrice(LocalDateTime pickUpTime, LocalDateTime dropOfTime, Long carId) {
+    public Double totalPrice(LocalDateTime pickUpTime, LocalDateTime dropOffTime, Long carId) {
         Car car = carRepository.findById(carId).orElseThrow(() ->
                 new ResourceNotFoundException(String.format(CAR_NOT_FOUND_MSG, carId)));
-        Long hours = (new Reservation()).getTotalHours(pickUpTime, dropOfTime);
+        Long hours = (new Reservation()).getTotalHours(pickUpTime, dropOffTime);
         return car.getPricePerHour() * hours;
     }
 }

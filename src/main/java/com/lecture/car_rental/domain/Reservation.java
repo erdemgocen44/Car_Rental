@@ -39,7 +39,7 @@ public class Reservation implements Serializable {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "MM/dd/yyyy HH:mm:ss", timezone = "Turkey")
     @NotNull(message = "Please enter the drop of time of the reservation")
     @Column(nullable = false)
-    private LocalDateTime dropOfTime;
+    private LocalDateTime dropOffTime;
 
     @Size(max = 50)
     @NotNull(message = "Please enter the pick up location of the reservation")
@@ -49,7 +49,7 @@ public class Reservation implements Serializable {
     @Size(max = 50)
     @NotNull(message = "Please enter the drop of location of the reservation")
     @Column(length = 50,nullable = false)
-    private String dropOfLocation;
+    private String dropOffLocation;
 
 
     @Enumerated(EnumType.STRING)
