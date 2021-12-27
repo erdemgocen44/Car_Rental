@@ -13,6 +13,8 @@ import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Optional;
+
 @AllArgsConstructor
 @Service
 public class ReservationService {
@@ -50,6 +52,33 @@ public class ReservationService {
         reservation.setTotalPrice(totalPrice);
         reservationRepository.save(reservation);
     }
+
+    public void updateReservation(Car carId, Long id, Reservation reservation) throws BadRequestException {
+        boolean checkStatus = carAvailability(carId.getId(), reservation.getPickUpTime(), reservation.getDropOffTime());
+        Optional<Reservation> reservationExist = reservationRepository.findById(id);
+
+        if (!reservationExist.isPresent())
+            throw new ResourceNotFoundException("Error: Reservation does not exist!");
+
+        if (reservation.getPickUpTime().compareTo(reservationExist.get().getPickUpTime()) == 0 &&
+                reservation.getDropOffTime().compareTo(reservationExist.get().getDropOffTime()) == 0 &&
+                carId == reservationExist.get().getCarId())
+            System.out.println();
+        else if (checkStatus)
+            throw new BadRequestException("Car is already reserved! Please choose another");
+        Double totalPrice = totalPrice(reservation.getPickUpTime(), reservation.getDropOffTime(), carId.getId());
+        reservationExist.get().setTotalPrice(totalPrice);
+
+        reservationExist.get().setCarId(carId);
+        reservationExist.get().setPickUpTime(reservation.getPickUpTime());
+        reservationExist.get().setDropOffTime(reservation.getDropOffTime());
+        reservationExist.get().setPickUpLocation(reservation.getPickUpLocation());
+        reservationExist.get().setDropOffLocation(reservation.getDropOffLocation());
+        reservationExist.get().setStatus(reservation.getStatus());
+
+        reservationRepository.save(reservationExist.get());
+    }
+
     public boolean carAvailability(Long carId, LocalDateTime pickUpTime, LocalDateTime dropOffTime) {
         List<Reservation> checkStatus = reservationRepository.checkStatus(carId, pickUpTime, dropOffTime,
                 ReservationStatus.DONE, ReservationStatus.CANCELED);
