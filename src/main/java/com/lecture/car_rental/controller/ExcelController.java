@@ -29,4 +29,22 @@ public class ExcelController {
                 .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
                 .contentType(MediaType.parseMediaType("application/vmd.ms-excel")).body(file);
     }
+
+    @GetMapping("/download/cars")
+    public ResponseEntity<Resource> getCarFile() {
+        String fileName = "cars.xlsx";
+        InputStreamResource file = new InputStreamResource(excelService.loadCar());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("application/vmd.ms-excel")).body(file);
+    }
+
+    @GetMapping("/download/reservations")
+    public ResponseEntity<Resource> getReservationFile() {
+        String fileName = "reservations.xlsx";
+        InputStreamResource file = new InputStreamResource(excelService.loadReservation());
+        return ResponseEntity.ok()
+                .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=" + fileName)
+                .contentType(MediaType.parseMediaType("application/vmd.ms-excel")).body(file);
+    }
 }
