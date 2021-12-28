@@ -92,4 +92,8 @@ public class User implements Serializable {
 
         return roles1;
     }
+
+    public String getFullName() {
+        return firstName + " " + lastName;
+    }
 }
