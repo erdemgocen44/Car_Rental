@@ -51,18 +51,14 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.cors().and().csrf().disable()
+        http.csrf().disable()
                 .exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
-                .authorizeRequests().antMatchers(
-                        "/car-rental/api/user/**",
-                        "/car-rental/api/files/**",
-                        "/car-rental/api/car/**",
-                        "/car-rental/api/reservations/**",
-                        "/car-rental/api/excel/**")
-                .permitAll()
+                .authorizeRequests().antMatchers("/car-rental/api/user/**",
+                        "/car-rental/api/files/**", "/car-rental/api/car/**", "/car-rental/api/reservations/**",
+                        "/car-rental/api/excel/**").permitAll()
                 .anyRequest().authenticated();
-        http.cors().and().csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
+        http.csrf().disable().exceptionHandling().authenticationEntryPoint(authEntryPointJwt).and()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS).and()
                 .antMatcher("/car-rental/api/login")
                 .antMatcher("/car-rental/api/register");
