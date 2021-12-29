@@ -16,7 +16,7 @@ public class ExcelHelper {
     static String[] HEADERS_USER = { "Id", "FirstName", "LastName", "PhoneNumber", "Email", "Address", "ZipCode", "Roles" };
     static String SHEET_USER = "Customers";
     static String[] HEADERS_CAR = { "Id", "Model", "Doors", "Seats", "Luggage", "Transmission", "AirConditioning",
-            "Age", "pricePerHour", "FuelType" };
+            "Age", "PricePerHour", "FuelType" };
     static String SHEET_CAR = "Cars";
     static String[] HEADERS_RESERVATION = { "Id", "CarId", "CarModel", "CustomerId", "CustomerFullName",
             "CustomerPhone", "PickUpTime", "DropOffTime", "PickUpLocation", "DropOffLocation", "Status" };
