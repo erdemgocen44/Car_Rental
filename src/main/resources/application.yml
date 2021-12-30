@@ -10,9 +10,9 @@ server:
 spring:
   datasource:
     driver-class-name: org.postgresql.Driver
-    password: hr
+    password: password
     username: postgres
-    url: jdbc:postgresql://localhost:5432/postgres
+    url: jdbc:postgresql://localhost:5432/lecture
   jpa:
     hibernate:
       ddl-auto: update
@@ -33,4 +33,5 @@ backendapi:
   app:
     jwtSecret: carRentalSecretKey
     jwtExpirationMs: 86400000
+
 
